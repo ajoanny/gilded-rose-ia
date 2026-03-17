@@ -1,4 +1,4 @@
-import { Item, GildedRose } from '../app/golden-master';
+import { Item, GildedRose } from '../app/gilded-rose.ai.1';
 
 describe('Gilded Rose - Golden Master', () => {
   describe('Normal items', () => {
@@ -154,6 +154,56 @@ describe('Gilded Rose - Golden Master', () => {
       const gildedRose = new GildedRose([]);
       const items = gildedRose.updateQuality();
       expect(items).toEqual([]);
+    });
+  });
+
+  describe('Conjured items', () => {
+    it('should decrease quality by 2 for Conjured items', () => {
+      const gildedRose = new GildedRose([new Item('Conjured Mana Cake', 10, 20)]);
+      gildedRose.updateQuality();
+      expect(gildedRose.items[0].quality).toBe(18);
+      expect(gildedRose.items[0].sellIn).toBe(9);
+    });
+
+    it('should decrease quality by 4 when sellIn date has passed', () => {
+      const gildedRose = new GildedRose([new Item('Conjured Mana Cake', 0, 20)]);
+      gildedRose.updateQuality();
+      expect(gildedRose.items[0].quality).toBe(16);
+      expect(gildedRose.items[0].sellIn).toBe(-1);
+    });
+
+    it('should never have negative quality', () => {
+      const gildedRose = new GildedRose([new Item('Conjured Mana Cake', 5, 1)]);
+      gildedRose.updateQuality();
+      expect(gildedRose.items[0].quality).toBe(0);
+    });
+
+    it('should handle quality of 0', () => {
+      const gildedRose = new GildedRose([new Item('Conjured Mana Cake', 5, 0)]);
+      gildedRose.updateQuality();
+      expect(gildedRose.items[0].quality).toBe(0);
+    });
+
+    it('should degrade twice as fast as normal items before expiry', () => {
+      const normalItem = new GildedRose([new Item('Normal Item', 10, 20)]);
+      const conjuredItem = new GildedRose([new Item('Conjured Item', 10, 20)]);
+
+      normalItem.updateQuality();
+      conjuredItem.updateQuality();
+
+      expect(normalItem.items[0].quality).toBe(19);
+      expect(conjuredItem.items[0].quality).toBe(18);
+    });
+
+    it('should degrade twice as fast as normal items after expiry', () => {
+      const normalItem = new GildedRose([new Item('Normal Item', -1, 20)]);
+      const conjuredItem = new GildedRose([new Item('Conjured Item', -1, 20)]);
+
+      normalItem.updateQuality();
+      conjuredItem.updateQuality();
+
+      expect(normalItem.items[0].quality).toBe(18);
+      expect(conjuredItem.items[0].quality).toBe(16);
     });
   });
 
