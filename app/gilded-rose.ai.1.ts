@@ -22,7 +22,7 @@ export class GildedRose {
       if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
         if (this.items[i].quality > 0) {
           if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-            const degradationRate = this.items[i].name.startsWith('Conjured') ? 2 : 1;
+            const degradationRate = this.items[i].name.toLowerCase().startsWith('conjured') ? 2 : 1;
             this.items[i].quality = Math.max(0, this.items[i].quality - degradationRate)
           }
         }
@@ -51,7 +51,7 @@ export class GildedRose {
           if (this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
             if (this.items[i].quality > 0) {
               if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-                const degradationRate = this.items[i].name.startsWith('Conjured') ? 2 : 1;
+                const degradationRate = this.items[i].name.toLowerCase().startsWith('conjured') ? 2 : 1;
                 this.items[i].quality = Math.max(0, this.items[i].quality - degradationRate)
               }
             }

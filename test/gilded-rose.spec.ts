@@ -205,6 +205,13 @@ describe('Gilded Rose - Golden Master', () => {
       expect(normalItem.items[0].quality).toBe(18);
       expect(conjuredItem.items[0].quality).toBe(16);
     });
+
+    it('should handle case-insensitive conjured items', () => {
+      const conjuredItem = new GildedRose([new Item('conjured Mana Cake', 10, 20)]);
+      conjuredItem.updateQuality();
+      expect(conjuredItem.items[0].quality).toBe(18);
+      expect(conjuredItem.items[0].sellIn).toBe(9);
+    });
   });
 
   describe('Edge cases', () => {
