@@ -1,6 +1,6 @@
-import { Item, GildedRose } from '../app/golden-master';
+import { Item, GildedRose } from '../app/gilded-rose.mutation';
 
-describe('Gilded Rose - Golden Master', () => {
+describe('Gilded Rose', () => {
   describe('Normal items', () => {
     it('should decrease quality and sellIn by 1 for normal items', () => {
       const gildedRose = new GildedRose([new Item('Normal Item', 10, 20)]);
