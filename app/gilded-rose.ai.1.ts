@@ -18,62 +18,53 @@ export class GildedRose {
   }
 
   updateQuality() {
-    for (let i = 0; i < this.items.length; i++) {
-      const item = this.items[i];
+    for (const item of this.items) {
+      // Item type identification
       const isLegendary = item.name === 'Sulfuras, Hand of Ragnaros';
       const isAgedBrie = item.name === 'Aged Brie';
       const isBackstagePass = item.name === 'Backstage passes to a TAFKAL80ETC concert';
       const isConjured = item.name.toLowerCase().startsWith('conjured');
 
-      // Legendary items never change
+      // Skip legendary items - they never change
       if (isLegendary) {
         continue;
       }
 
-      // Update quality before sell date
+      // Quality bounds helpers (inline to keep logic in updateQuality)
+      const increaseQuality = (amount: number) => {
+        item.quality = Math.min(50, item.quality + amount);
+      };
+
+      const decreaseQuality = (amount: number) => {
+        item.quality = Math.max(0, item.quality - amount);
+      };
+
+      const isExpired = () => item.sellIn <= 0;
+
+      // Update quality based on item type and expiration status
       if (isAgedBrie) {
-        // Aged Brie increases in quality
-        if (item.quality < 50) {
-          item.quality += 1;
-        }
+        // Aged Brie increases quality over time (faster when expired)
+        increaseQuality(isExpired() ? 2 : 1);
       } else if (isBackstagePass) {
-        // Backstage passes increase in quality as concert approaches
-        if (item.quality < 50) {
-          item.quality += 1;
-
-          if (item.sellIn < 11 && item.quality < 50) {
-            item.quality += 1;
-          }
-
-          if (item.sellIn < 6 && item.quality < 50) {
-            item.quality += 1;
-          }
+        // Backstage passes have complex quality rules
+        if (isExpired()) {
+          item.quality = 0; // Worthless after concert
+        } else if (item.sellIn <= 5) {
+          increaseQuality(3);
+        } else if (item.sellIn <= 10) {
+          increaseQuality(2);
+        } else {
+          increaseQuality(1);
         }
       } else {
-        // Normal and Conjured items degrade
-        const degradationRate = isConjured ? 2 : 1;
-        item.quality = Math.max(0, item.quality - degradationRate);
+        // Normal and Conjured items degrade (faster when expired and if conjured)
+        const baseRate = isConjured ? 2 : 1;
+        const degradationRate = isExpired() ? baseRate * 2 : baseRate;
+        decreaseQuality(degradationRate);
       }
 
-      // Update sellIn
+      // Decrease sellIn date
       item.sellIn -= 1;
-
-      // Update quality after sell date
-      if (item.sellIn < 0) {
-        if (isAgedBrie) {
-          // Aged Brie increases twice as fast after sell date
-          if (item.quality < 50) {
-            item.quality += 1;
-          }
-        } else if (isBackstagePass) {
-          // Backstage passes drop to 0 after concert
-          item.quality = 0;
-        } else {
-          // Normal and Conjured items degrade twice as fast after sell date
-          const degradationRate = isConjured ? 2 : 1;
-          item.quality = Math.max(0, item.quality - degradationRate);
-        }
-      }
     }
 
     return this.items;
