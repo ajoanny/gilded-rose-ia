@@ -23,7 +23,7 @@ export class GildedRose {
         if (this.items[i].quality > 0) {
           if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
             const degradationRate = this.items[i].name.startsWith('Conjured') ? 2 : 1;
-            this.items[i].quality = this.items[i].quality - degradationRate
+            this.items[i].quality = Math.max(0, this.items[i].quality - degradationRate)
           }
         }
       } else {
@@ -52,7 +52,7 @@ export class GildedRose {
             if (this.items[i].quality > 0) {
               if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
                 const degradationRate = this.items[i].name.startsWith('Conjured') ? 2 : 1;
-                this.items[i].quality = this.items[i].quality - degradationRate
+                this.items[i].quality = Math.max(0, this.items[i].quality - degradationRate)
               }
             }
           } else {
