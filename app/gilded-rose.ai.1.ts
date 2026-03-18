@@ -18,49 +18,59 @@ export class GildedRose {
   }
 
   updateQuality() {
+    const MAX_QUALITY = 50;
+    const MIN_QUALITY = 0;
+
     for (const item of this.items) {
-      // Item type identification
+      // Item type matchers
       const isLegendary = item.name === 'Sulfuras, Hand of Ragnaros';
       const isAgedBrie = item.name === 'Aged Brie';
       const isBackstagePass = item.name === 'Backstage passes to a TAFKAL80ETC concert';
       const isConjured = item.name.toLowerCase().startsWith('conjured');
+      const isExpired = item.sellIn <= 0;
 
       // Skip legendary items - they never change
       if (isLegendary) {
         continue;
       }
 
-      // Quality bounds helpers (inline to keep logic in updateQuality)
-      const increaseQuality = (amount: number) => {
-        item.quality = Math.min(50, item.quality + amount);
+      // Quality adjustment helpers (inline to keep logic in updateQuality)
+      const clampQuality = () => {
+        item.quality = Math.max(MIN_QUALITY, Math.min(MAX_QUALITY, item.quality));
       };
 
-      const decreaseQuality = (amount: number) => {
-        item.quality = Math.max(0, item.quality - amount);
+      const adjustQuality = (delta: number) => {
+        item.quality += delta;
+        clampQuality();
       };
 
-      const isExpired = () => item.sellIn <= 0;
+      // Calculate quality change based on item type
+      let qualityDelta = 0;
 
-      // Update quality based on item type and expiration status
       if (isAgedBrie) {
         // Aged Brie increases quality over time (faster when expired)
-        increaseQuality(isExpired() ? 2 : 1);
+        qualityDelta = isExpired ? 2 : 1;
       } else if (isBackstagePass) {
-        // Backstage passes have complex quality rules
-        if (isExpired()) {
-          item.quality = 0; // Worthless after concert
+        // Backstage passes: quality increases as concert approaches, drops to 0 after
+        if (isExpired) {
+          item.quality = MIN_QUALITY;
         } else if (item.sellIn <= 5) {
-          increaseQuality(3);
+          qualityDelta = 3;
         } else if (item.sellIn <= 10) {
-          increaseQuality(2);
+          qualityDelta = 2;
         } else {
-          increaseQuality(1);
+          qualityDelta = 1;
         }
       } else {
-        // Normal and Conjured items degrade (faster when expired and if conjured)
+        // Normal and Conjured items degrade (conjured degrade twice as fast)
         const baseRate = isConjured ? 2 : 1;
-        const degradationRate = isExpired() ? baseRate * 2 : baseRate;
-        decreaseQuality(degradationRate);
+        const multiplier = isExpired ? 2 : 1;
+        qualityDelta = -(baseRate * multiplier);
+      }
+
+      // Apply quality change (skip for backstage passes that expired)
+      if (!(isBackstagePass && isExpired)) {
+        adjustQuality(qualityDelta);
       }
 
       // Decrease sellIn date
