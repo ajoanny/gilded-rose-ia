@@ -17,32 +17,28 @@ export class GildedRose {
     this.items = items;
   }
 
+  private increaseQualityIfBelowMax(item: Item): void {
+    if (item.quality < 50) {
+      item.quality = item.quality + 1;
+    }
+  }
+
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
       switch (this.items[i].name) {
         case 'Aged Brie':
-          if (this.items[i].quality < 50) {
-            this.items[i].quality = this.items[i].quality + 1
-          }
+          this.increaseQualityIfBelowMax(this.items[i]);
           if (this.items[i].sellIn < 1) {
-            if (this.items[i].quality < 50) {
-              this.items[i].quality = this.items[i].quality + 1
-            }
+            this.increaseQualityIfBelowMax(this.items[i]);
           }
           break;
         case 'Backstage passes to a TAFKAL80ETC concert':
-          if (this.items[i].quality < 50) {
-            this.items[i].quality = this.items[i].quality + 1
-            if (this.items[i].sellIn < 11) {
-              if (this.items[i].quality < 50) {
-                this.items[i].quality = this.items[i].quality + 1
-              }
-            }
-            if (this.items[i].sellIn < 6) {
-              if (this.items[i].quality < 50) {
-                this.items[i].quality = this.items[i].quality + 1
-              }
-            }
+          this.increaseQualityIfBelowMax(this.items[i]);
+          if (this.items[i].sellIn < 11) {
+            this.increaseQualityIfBelowMax(this.items[i]);
+          }
+          if (this.items[i].sellIn < 6) {
+            this.increaseQualityIfBelowMax(this.items[i]);
           }
           if (this.items[i].sellIn < 1) {
             this.items[i].quality = this.items[i].quality - this.items[i].quality
