@@ -1,5 +1,5 @@
 import { Item, GildedRose } from '@/golden-master';
-import { GildedRose as GildedRoseAI } from '@/gilded-rose.ai.1';
+import { GildedRose as GildedRoseAI } from '@/gilded-rose.ai.2';
 
 
 describe('Gilded Rose Golden master', () => {
