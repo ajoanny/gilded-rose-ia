@@ -17,29 +17,33 @@ export class GildedRose {
     this.items = items;
   }
 
+  private isQualityBelowMax(item: Item): boolean {
+    return item.quality < 50;
+  }
+
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
       switch (this.items[i].name) {
         case 'Aged Brie':
-          if (this.items[i].quality < 50) {
+          if (this.isQualityBelowMax(this.items[i])) {
             this.items[i].quality = this.items[i].quality + 1
           }
           if (this.items[i].sellIn < 1) {
-            if (this.items[i].quality < 50) {
+            if (this.isQualityBelowMax(this.items[i])) {
               this.items[i].quality = this.items[i].quality + 1
             }
           }
           break;
         case 'Backstage passes to a TAFKAL80ETC concert':
-          if (this.items[i].quality < 50) {
+          if (this.isQualityBelowMax(this.items[i])) {
             this.items[i].quality = this.items[i].quality + 1
             if (this.items[i].sellIn < 11) {
-              if (this.items[i].quality < 50) {
+              if (this.isQualityBelowMax(this.items[i])) {
                 this.items[i].quality = this.items[i].quality + 1
               }
             }
             if (this.items[i].sellIn < 6) {
-              if (this.items[i].quality < 50) {
+              if (this.isQualityBelowMax(this.items[i])) {
                 this.items[i].quality = this.items[i].quality + 1
               }
             }
