@@ -49,6 +49,13 @@ export class GildedRose {
     }
   }
 
+  private updateSimpleItem(item: Item): void {
+    this.decreaseQualityIfAboveMin(item);
+    if (item.sellIn < 1) {
+      this.decreaseQualityIfAboveMin(item);
+    }
+  }
+
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
       switch (this.items[i].name) {
@@ -61,10 +68,7 @@ export class GildedRose {
         case 'Sulfuras, Hand of Ragnaros':
           break;
         default:
-          this.decreaseQualityIfAboveMin(this.items[i]);
-          if (this.items[i].sellIn < 1) {
-            this.decreaseQualityIfAboveMin(this.items[i]);
-          }
+          this.updateSimpleItem(this.items[i]);
           break;
       }
       if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
