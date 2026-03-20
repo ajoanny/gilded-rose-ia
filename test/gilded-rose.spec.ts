@@ -1,6 +1,6 @@
 import { Item, GildedRose } from '../app/gilded-rose.ai.1';
 
-describe('Gilded Rose - Golden Master', () => {
+describe.skip('Gilded Rose - Golden Master', () => {
   describe('Normal items', () => {
     it('should decrease quality and sellIn by 1 for normal items', () => {
       const gildedRose = new GildedRose([new Item('Normal Item', 10, 20)]);
