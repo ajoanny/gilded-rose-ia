@@ -36,6 +36,19 @@ export class GildedRose {
     }
   }
 
+  private updateBackstagePasses(item: Item): void {
+    this.increaseQualityIfBelowMax(item);
+    if (item.sellIn < 11) {
+      this.increaseQualityIfBelowMax(item);
+    }
+    if (item.sellIn < 6) {
+      this.increaseQualityIfBelowMax(item);
+    }
+    if (item.sellIn < 1) {
+      item.quality = item.quality - item.quality;
+    }
+  }
+
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
       switch (this.items[i].name) {
@@ -43,16 +56,7 @@ export class GildedRose {
           this.updateAgedBrie(this.items[i]);
           break;
         case 'Backstage passes to a TAFKAL80ETC concert':
-          this.increaseQualityIfBelowMax(this.items[i]);
-          if (this.items[i].sellIn < 11) {
-            this.increaseQualityIfBelowMax(this.items[i]);
-          }
-          if (this.items[i].sellIn < 6) {
-            this.increaseQualityIfBelowMax(this.items[i]);
-          }
-          if (this.items[i].sellIn < 1) {
-            this.items[i].quality = this.items[i].quality - this.items[i].quality
-          }
+          this.updateBackstagePasses(this.items[i]);
           break;
         case 'Sulfuras, Hand of Ragnaros':
           break;
