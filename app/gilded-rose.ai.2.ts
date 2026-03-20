@@ -23,6 +23,12 @@ export class GildedRose {
     }
   }
 
+  private decreaseQualityIfAboveMin(item: Item): void {
+    if (item.quality > 0) {
+      item.quality = item.quality - 1;
+    }
+  }
+
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
       switch (this.items[i].name) {
@@ -47,13 +53,9 @@ export class GildedRose {
         case 'Sulfuras, Hand of Ragnaros':
           break;
         default:
-          if (this.items[i].quality > 0) {
-            this.items[i].quality = this.items[i].quality - 1
-          }
+          this.decreaseQualityIfAboveMin(this.items[i]);
           if (this.items[i].sellIn < 1) {
-            if (this.items[i].quality > 0) {
-              this.items[i].quality = this.items[i].quality - 1
-            }
+            this.decreaseQualityIfAboveMin(this.items[i]);
           }
           break;
       }
