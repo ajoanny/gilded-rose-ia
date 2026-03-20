@@ -64,18 +64,23 @@ export class GildedRose {
 
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
-      switch (this.items[i].name) {
-        case 'Aged Brie':
-          this.updateAgedBrie(this.items[i]);
-          break;
-        case 'Backstage passes to a TAFKAL80ETC concert':
-          this.updateBackstagePasses(this.items[i]);
-          break;
-        case 'Sulfuras, Hand of Ragnaros':
-          break;
-        default:
-          this.updateSimpleItem(this.items[i]);
-          break;
+      if (this.items[i].name.includes('Conjured')) {
+        this.decreaseQualityIfAboveMin(this.items[i]);
+        this.decreaseQualityIfAboveMin(this.items[i]);
+      } else {
+        switch (this.items[i].name) {
+          case 'Aged Brie':
+            this.updateAgedBrie(this.items[i]);
+            break;
+          case 'Backstage passes to a TAFKAL80ETC concert':
+            this.updateBackstagePasses(this.items[i]);
+            break;
+          case 'Sulfuras, Hand of Ragnaros':
+            break;
+          default:
+            this.updateSimpleItem(this.items[i]);
+            break;
+        }
       }
       if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
         this.items[i].sellIn = this.items[i].sellIn - 1;
