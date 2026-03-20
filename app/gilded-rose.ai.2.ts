@@ -29,14 +29,18 @@ export class GildedRose {
     }
   }
 
+  private updateAgedBrie(item: Item): void {
+    this.increaseQualityIfBelowMax(item);
+    if (item.sellIn < 1) {
+      this.increaseQualityIfBelowMax(item);
+    }
+  }
+
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
       switch (this.items[i].name) {
         case 'Aged Brie':
-          this.increaseQualityIfBelowMax(this.items[i]);
-          if (this.items[i].sellIn < 1) {
-            this.increaseQualityIfBelowMax(this.items[i]);
-          }
+          this.updateAgedBrie(this.items[i]);
           break;
         case 'Backstage passes to a TAFKAL80ETC concert':
           this.increaseQualityIfBelowMax(this.items[i]);
