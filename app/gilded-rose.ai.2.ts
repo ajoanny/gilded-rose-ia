@@ -62,6 +62,15 @@ export class GildedRose {
     }
   }
 
+  private updateConjuredItem(item: Item): void {
+    this.decreaseQualityIfAboveMin(item);
+    this.decreaseQualityIfAboveMin(item);
+    if (item.sellIn < GildedRose.EXPIRED_SELL_IN) {
+      this.decreaseQualityIfAboveMin(item);
+      this.decreaseQualityIfAboveMin(item);
+    }
+  }
+
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
       switch (this.items[i].name) {
@@ -72,6 +81,9 @@ export class GildedRose {
           this.updateBackstagePasses(this.items[i]);
           break;
         case 'Sulfuras, Hand of Ragnaros':
+          break;
+        case 'Item Conjured':
+          this.updateConjuredItem(this.items[i]);
           break;
         default:
           this.updateSimpleItem(this.items[i]);
