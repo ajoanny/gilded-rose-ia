@@ -33,6 +33,11 @@ export class GildedRose {
     if (item.quality > GildedRose.MIN_QUALITY) {
       item.quality = item.quality - 1;
     }
+    if (item.name.includes('Conjured')) {
+      if (item.quality > GildedRose.MIN_QUALITY) {
+        item.quality = item.quality - 1;
+      }
+    }
   }
 
   private updateAgedBrie(item: Item): void {
@@ -57,14 +62,8 @@ export class GildedRose {
 
   private updateSimpleItem(item: Item): void {
     this.decreaseQualityIfAboveMin(item);
-    if (item.name.includes('Conjured')) {
-      this.decreaseQualityIfAboveMin(item);
-    }
     if (item.sellIn < GildedRose.EXPIRED_SELL_IN) {
       this.decreaseQualityIfAboveMin(item);
-      if (item.name.includes('Conjured')) {
-        this.decreaseQualityIfAboveMin(item);
-      }
     }
   }
 
