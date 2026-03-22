@@ -67,7 +67,7 @@ export class GildedRose {
       if (this.items[i].name.includes('Conjured')) {
         this.decreaseQualityIfAboveMin(this.items[i]);
         this.decreaseQualityIfAboveMin(this.items[i]);
-        if (this.items[i].sellIn === 0) {
+        if (this.items[i].sellIn < GildedRose.EXPIRED_SELL_IN) {
           this.decreaseQualityIfAboveMin(this.items[i]);
           this.decreaseQualityIfAboveMin(this.items[i]);
         }
