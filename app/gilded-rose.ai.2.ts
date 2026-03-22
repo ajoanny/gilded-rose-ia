@@ -33,7 +33,7 @@ export class GildedRose {
     if (item.quality > GildedRose.MIN_QUALITY) {
       item.quality = item.quality - 1;
     }
-    if (item.name.includes('Conjured')) {
+    if (item.name.toLowerCase().includes('conjured')) {
       if (item.quality > GildedRose.MIN_QUALITY) {
         item.quality = item.quality - 1;
       }
