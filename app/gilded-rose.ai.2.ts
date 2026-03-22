@@ -57,34 +57,31 @@ export class GildedRose {
 
   private updateSimpleItem(item: Item): void {
     this.decreaseQualityIfAboveMin(item);
+    if (item.name.includes('Conjured')) {
+      this.decreaseQualityIfAboveMin(item);
+    }
     if (item.sellIn < GildedRose.EXPIRED_SELL_IN) {
       this.decreaseQualityIfAboveMin(item);
+      if (item.name.includes('Conjured')) {
+        this.decreaseQualityIfAboveMin(item);
+      }
     }
   }
 
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
-      if (this.items[i].name.includes('Conjured')) {
-        this.decreaseQualityIfAboveMin(this.items[i]);
-        this.decreaseQualityIfAboveMin(this.items[i]);
-        if (this.items[i].sellIn < GildedRose.EXPIRED_SELL_IN) {
-          this.decreaseQualityIfAboveMin(this.items[i]);
-          this.decreaseQualityIfAboveMin(this.items[i]);
-        }
-      } else {
-        switch (this.items[i].name) {
-          case 'Aged Brie':
-            this.updateAgedBrie(this.items[i]);
-            break;
-          case 'Backstage passes to a TAFKAL80ETC concert':
-            this.updateBackstagePasses(this.items[i]);
-            break;
-          case 'Sulfuras, Hand of Ragnaros':
-            break;
-          default:
-            this.updateSimpleItem(this.items[i]);
-            break;
-        }
+      switch (this.items[i].name) {
+        case 'Aged Brie':
+          this.updateAgedBrie(this.items[i]);
+          break;
+        case 'Backstage passes to a TAFKAL80ETC concert':
+          this.updateBackstagePasses(this.items[i]);
+          break;
+        case 'Sulfuras, Hand of Ragnaros':
+          break;
+        default:
+          this.updateSimpleItem(this.items[i]);
+          break;
       }
       if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
         this.items[i].sellIn = this.items[i].sellIn - 1;
