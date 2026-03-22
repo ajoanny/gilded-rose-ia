@@ -296,4 +296,12 @@ describe('GildedRose', () => {
     expect(items[0].quality).toBe(8);
     expect(items[0].sellIn).toBe(0);
   });
+
+  it("Conjured item expired: quality 10, sellIn 0 - quality should decrease by 4 and sellIn should decrease by 1", () => {
+    const gildedRose = new GildedRose([new Item("Another item Conjured", 0, 10)]);
+    const items = gildedRose.updateQuality();
+
+    expect(items[0].quality).toBe(6);
+    expect(items[0].sellIn).toBe(-1);
+  });
 });
